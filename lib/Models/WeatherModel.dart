@@ -89,7 +89,7 @@ class Clouds
 class Wind 
 {
     final double speed;
-    final double deg;
+    final int deg;
 
     Wind({
         this.speed,

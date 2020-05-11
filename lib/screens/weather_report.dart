@@ -12,42 +12,41 @@ class WeatherReport extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(0, 30, 0, 0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Container(
-            child: Text(_day, style: TextStyle(
-              color: Colors.white,
-              fontSize: 25,
-              fontWeight: FontWeight.w300
-            )
-            ),
-          ),
-          Row(children: <Widget>[
-            Container(
-              child: Text(_tempMax + " | ", style: TextStyle(
+        padding: const EdgeInsets.fromLTRB(0, 30, 0, 0),
+        child: Row(
+          children: <Widget>[
+            Expanded(
+              child: Text(_day, style: TextStyle(
                 color: Colors.white,
                 fontSize: 25,
                 fontWeight: FontWeight.w300
               )
               ),
             ),
-            Opacity(
-              opacity: 0.5,
+            SizedBox(width: 70),
+            Expanded(
               child: Container(
-                child: Text(_tempMin, style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 25,
-                  fontWeight: FontWeight.w300
-                )
-                ),
+                child: Row(children: <Widget>[
+                  Text(_tempMax + " | ", style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 25,
+                      fontWeight: FontWeight.w300
+                    )
+                  ),
+                  Opacity(
+                    opacity: 0.5,
+                    child: Text(_tempMin, style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 25,
+                      fontWeight: FontWeight.w300
+                      )
+                      ),
+                    ),
+                ],),
               ),
             ),
-          ],)
-        ],
-      ),
-    );
+          ],
+        ),
+      );
   }
 }
