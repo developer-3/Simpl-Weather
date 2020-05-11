@@ -1,16 +1,14 @@
-# weather_app
+# Simpl Weather
 
-A new Flutter project.
+A basic weather app for iOS and Android built in Flutter.  Weather data pulled from OpenWeatherMap API.
 
-## Getting Started
+## User Stories
 
-This project is a starting point for a Flutter application.
+- [X] User can view current temperature for their current location.
+- [X] User can view highs and lows for the next 5 days. 
+- [ ] User can view detailed information about weather for their location.
 
-A few resources to get you started if this is your first Flutter project:
+## Screenshots
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+<img src='' title='Main Screen' width='' alt='Main Screen' />
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
