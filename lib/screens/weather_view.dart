@@ -39,8 +39,10 @@ class _WeatherViewState extends State<WeatherView> {
       var lon = userPosition.longitude;
       var coordinates = Coordinates(lat, lon);
 
-      Geocoder.local.findAddressesFromCoordinates(coordinates).then((address) => location = address.first);
-
+      Geocoder.local.findAddressesFromCoordinates(coordinates).then((address) {
+          location = address.first;
+          print(location.subAdminArea);
+        });
       createURL().then((url) {
         url = url;
         getWeatherData(url).then((model) {
@@ -190,9 +192,10 @@ class _WeatherViewState extends State<WeatherView> {
                 ),
               ),
               AnimatedContainer(
+                width: MediaQuery.of(context).size.width,
                 height: _height,
                 duration: Duration(milliseconds: 1000),
-                curve: Curves.fastOutSlowIn,
+                curve: Curves.linear,
                 decoration: BoxDecoration(
                   color: Colors.lightBlue,
                   borderRadius: new BorderRadius.only(
@@ -201,22 +204,6 @@ class _WeatherViewState extends State<WeatherView> {
                 ),
                 child: Stack(
                   children: <Widget>[
-                    Align(
-                      alignment: Alignment.bottomCenter,
-                      child: RawMaterialButton(
-                        onPressed: () {
-                          _updateState();
-                        },
-                        elevation: 5.0,
-                        fillColor: Colors.white,
-                        child: Icon(
-                          _icon,
-                          size: 35.0,
-                        ),
-                        padding: EdgeInsets.all(15.0),
-                        shape: CircleBorder(),
-                      ),
-                    ),
                     Align(
                       alignment: Alignment(-0.8, -0.45),
                       child: AnimatedOpacity(
@@ -241,14 +228,25 @@ class _WeatherViewState extends State<WeatherView> {
                         )),
                       ),
                     ),
-                    Align(
-                      alignment: Alignment(0.85, 0.85),
+                    AnimatedPositioned(
+                      right: 30,
+                      bottom: _visible ? 16 : 75,
+                      duration: Duration(milliseconds: 1000),
                       child: Text('${(weatherModel.main.temp).round()}º', style: TextStyle(
                         color: Colors.white,
                         fontSize: 55,
                         fontWeight: FontWeight.w600,
                       ))
-                      )
+                      ),
+                    Positioned(
+                      bottom: 28,
+                      right: 30,
+                      child: AnimatedOpacity(
+                        duration: Duration(milliseconds: 1000),
+                        opacity: _visible ? 0.0 : 0.5,
+                        child: Text("41º", style: TextStyle(color: Colors.white, fontSize: 45)),
+                      ),
+                    )
                   ],
                 )
               ),
@@ -260,9 +258,81 @@ class _WeatherViewState extends State<WeatherView> {
                   duration: Duration(milliseconds: 600),
                   opacity: _visible ? 0.0 : 1.0,
                     child: Container(
-                      child: Text("${location.featureName}", style: TextStyle(color: Colors.white, fontSize: 45, fontWeight: FontWeight.w600),)),
+                      child: Text("${location.subAdminArea},\n${location.adminArea}", style: TextStyle(color: Colors.white, fontSize: 45, fontWeight: FontWeight.w600),)),
                   ),
                 ),
+              Positioned(
+                top: 230,
+                left: 32,
+                child: AnimatedOpacity(
+                  duration: Duration(milliseconds: 1200),
+                  opacity: _visible ? 0.0 : 1.0,
+                  child: Container(
+                    child: Row(
+                      children: <Widget>[
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Opacity(
+                              opacity: 0.5,
+                              child: Text("Sunrise", style: TextStyle(color: Colors.white, fontSize: 25))),
+                            Text("7:30 am", style: TextStyle(fontSize: 35, color: Colors.white)),
+                            SizedBox(height: 55),
+                            Opacity(
+                              opacity: 0.5,
+                              child: Text("Humidity", style: TextStyle(color: Colors.white, fontSize: 25))),
+                            Text("55%", style: TextStyle(fontSize: 35, color: Colors.white)),
+                          ],
+                        ),
+                        SizedBox(width: MediaQuery.of(context).size.width/5.5),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: <Widget>[
+                            Opacity(
+                              opacity: 0.5,
+                              child: Text("Sunset", style: TextStyle(color: Colors.white, fontSize: 25))),
+                            Text("8:30 pm", style: TextStyle(fontSize: 35, color: Colors.white)),
+                            SizedBox(height: 55),
+                            Opacity(
+                              opacity: 0.5,
+                              child: Text("Wind Speed", style: TextStyle(color: Colors.white, fontSize: 25))),
+                            Text("6 mph", style: TextStyle(fontSize: 35, color: Colors.white)),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              AnimatedPositioned(
+                duration: Duration(milliseconds: 1000),
+                top: _visible ? 290 : MediaQuery.of(context).size.height-210, 
+                right: MediaQuery.of(context).size.width/2-45,
+                child: RawMaterialButton(
+                  onPressed: () {
+                    _updateState();
+                  },
+                  elevation: 5.0,
+                  fillColor: Colors.white,
+                  child: Icon(
+                    _icon,
+                    size: 35.0,
+                  ),
+                  padding: EdgeInsets.all(15.0),
+                  shape: CircleBorder(),
+                ),
+              ),
+              Positioned(
+                bottom: 32,
+                left: MediaQuery.of(context).size.width/4,
+                child: Container(
+                  margin: const EdgeInsets.all(0.0),
+                  child: AnimatedOpacity(
+                    duration: Duration(milliseconds: 1000),
+                    opacity: _visible ? 0.0 : 1.0,
+                      child: Text('© Adam Anderson 2020', style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w300))),
+                ),
+              ),
             ],
           ),
         ),
