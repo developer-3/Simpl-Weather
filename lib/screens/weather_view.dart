@@ -129,6 +129,7 @@ class _WeatherViewState extends State<WeatherView> {
 
   @override
   Widget build(BuildContext context) {
+
     DateTime now = DateTime.now();
     String formattedDate = DateFormat('MMMMEEEEd').format(now);
     for (var i = 1; i <= 6; i++) {
@@ -136,207 +137,216 @@ class _WeatherViewState extends State<WeatherView> {
       String format = DateFormat('EEEE').format(day);
       days.add(format);
     }
-    if (weatherModel == null || forecast == null ){
+    while (weatherModel == null || forecast == null ) {
       return Center(child: new Container(child: CircularProgressIndicator()));
-    } else {
-      return Scaffold(
-        backgroundColor: const Color(0xFF06304B),
-        body: Container(
-          child: Stack(
-            children: <Widget>[
-              Container(
-                color: const Color(0xFF06304B),
-              ),
-              new Positioned(
-                top: 380,
-                child: Container(
-                  child: AnimatedOpacity(
-                    duration: Duration(milliseconds: 500),
-                    opacity: _visible ? 1.0 : 0.0,
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(32.0, 0, 32.0, 0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Align(
-                              alignment: Alignment.centerLeft,
-                              child: Container(
-                                child: Text("Your Week", style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 35,
-                                    fontWeight: FontWeight.w600,
-                                    textBaseline: TextBaseline.alphabetic
-                                  ),),
-                              ),
-                            ),
-                            SizedBox(height: 10,),
-                            Container(width: 350, height: 3,color: Colors.white,),
-                            SizedBox(height: 10,),
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  WeatherReport(days[0], '${(forecast.days[0].main.tempMax).round()}º', '${(forecast.days[1].main.tempMin).round()-4}º'),
-                                  WeatherReport(days[1], '${(forecast.days[8].main.tempMax).round()}º', '${(forecast.days[9].main.tempMin).round()-4}º'),
-                                  WeatherReport(days[2], '${(forecast.days[16].main.tempMax).round()}º', '${(forecast.days[17].main.tempMin).round()-4}º'),
-                                  WeatherReport(days[3], '${(forecast.days[24].main.tempMax).round()}º', '${(forecast.days[25].main.tempMin).round()-4}º'),
-                                  WeatherReport(days[4], '${(forecast.days[32].main.tempMax).round()}º', '${(forecast.days[33].main.tempMin).round()-4}º'),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                  ),
-                ),
-              ),
-              AnimatedContainer(
-                width: MediaQuery.of(context).size.width,
-                height: _height,
-                duration: Duration(milliseconds: 1000),
-                curve: Curves.linear,
-                decoration: BoxDecoration(
-                  color: Colors.lightBlue,
-                  borderRadius: new BorderRadius.only(
-                    bottomLeft:  const  Radius.circular(45.0),
-                    bottomRight: const  Radius.circular(45.0))
-                ),
-                child: Stack(
-                  children: <Widget>[
-                    Align(
-                      alignment: Alignment(-0.8, -0.45),
-                      child: AnimatedOpacity(
-                        duration: Duration(milliseconds: 500),
-                        opacity: _visible ? 1.0 : 0.0,
-                        child: Text("Good \nMorning", style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 45,
-                          fontWeight: FontWeight.w600,
-                        )),
-                      ),
-                    ),
-                    Align(
-                      alignment: Alignment(-0.8, 0.18),
-                      child: AnimatedOpacity(
-                        duration: Duration(milliseconds: 500),
-                        opacity: _visible ? 1.0 : 0.0,
-                        child: Text(formattedDate, style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w300
-                        )),
-                      ),
-                    ),
-                    AnimatedPositioned(
-                      right: 30,
-                      bottom: _visible ? 16 : 75,
-                      duration: Duration(milliseconds: 1000),
-                      child: Text('${(weatherModel.main.temp).round()}º', style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 55,
-                        fontWeight: FontWeight.w600,
-                      ))
-                      ),
-                    Positioned(
-                      bottom: 28,
-                      right: 30,
-                      child: AnimatedOpacity(
-                        duration: Duration(milliseconds: 1000),
-                        opacity: _visible ? 0.0 : 0.5,
-                        child: Text("41º", style: TextStyle(color: Colors.white, fontSize: 45)),
-                      ),
-                    )
-                  ],
-                )
-              ),
-              AnimatedPositioned(
-                duration: Duration(milliseconds: 800),
-                top: _visible ? 150 : 75, 
-                left: 16,
-                child: AnimatedOpacity(
-                  duration: Duration(milliseconds: 600),
-                  opacity: _visible ? 0.0 : 1.0,
-                    child: Container(
-                      child: Text("${location.subAdminArea},\n${location.adminArea}", style: TextStyle(color: Colors.white, fontSize: 45, fontWeight: FontWeight.w600),)),
-                  ),
-                ),
-              Positioned(
-                top: 230,
-                left: 32,
-                child: AnimatedOpacity(
-                  duration: Duration(milliseconds: 1200),
-                  opacity: _visible ? 0.0 : 1.0,
-                  child: Container(
-                    child: Row(
-                      children: <Widget>[
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Opacity(
-                              opacity: 0.5,
-                              child: Text("Sunrise", style: TextStyle(color: Colors.white, fontSize: 25))),
-                            Text("7:30 am", style: TextStyle(fontSize: 35, color: Colors.white)),
-                            SizedBox(height: 55),
-                            Opacity(
-                              opacity: 0.5,
-                              child: Text("Humidity", style: TextStyle(color: Colors.white, fontSize: 25))),
-                            Text("55%", style: TextStyle(fontSize: 35, color: Colors.white)),
-                          ],
-                        ),
-                        SizedBox(width: MediaQuery.of(context).size.width/5.5),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: <Widget>[
-                            Opacity(
-                              opacity: 0.5,
-                              child: Text("Sunset", style: TextStyle(color: Colors.white, fontSize: 25))),
-                            Text("8:30 pm", style: TextStyle(fontSize: 35, color: Colors.white)),
-                            SizedBox(height: 55),
-                            Opacity(
-                              opacity: 0.5,
-                              child: Text("Wind Speed", style: TextStyle(color: Colors.white, fontSize: 25))),
-                            Text("6 mph", style: TextStyle(fontSize: 35, color: Colors.white)),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              AnimatedPositioned(
-                duration: Duration(milliseconds: 1000),
-                top: _visible ? 290 : MediaQuery.of(context).size.height-210, 
-                right: MediaQuery.of(context).size.width/2-45,
-                child: RawMaterialButton(
-                  onPressed: () {
-                    _updateState();
-                  },
-                  elevation: 5.0,
-                  fillColor: Colors.white,
-                  child: Icon(
-                    _icon,
-                    size: 35.0,
-                  ),
-                  padding: EdgeInsets.all(15.0),
-                  shape: CircleBorder(),
-                ),
-              ),
-              Positioned(
-                bottom: 32,
-                left: MediaQuery.of(context).size.width/4,
-                child: Container(
-                  margin: const EdgeInsets.all(0.0),
-                  child: AnimatedOpacity(
-                    duration: Duration(milliseconds: 1000),
-                    opacity: _visible ? 0.0 : 1.0,
-                      child: Text('© Adam Anderson 2020', style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w300))),
-                ),
-              ),
-            ],
-          ),
-        ),
-      );
     }
+    
+    var sunrise = new DateTime.fromMillisecondsSinceEpoch(weatherModel.sys.sunrise * 1000).toUtc();
+    var sunriseLocal = sunrise.toLocal();
+    String formatSunrise = DateFormat('jm').format(sunriseLocal);
+    var sunset = new DateTime.fromMillisecondsSinceEpoch(weatherModel.sys.sunset * 1000);
+    var sunsetLocal = sunset.toLocal();
+    String formatSunset = DateFormat('jm').format(sunsetLocal);
+
+    return Scaffold(
+      backgroundColor: const Color(0xFF06304B),
+      body: Container(
+        child: Stack(
+          children: <Widget>[
+            Container(
+              color: const Color(0xFF06304B),
+            ),
+            new Positioned(
+              top: 380,
+              child: Container(
+                child: AnimatedOpacity(
+                  duration: Duration(milliseconds: 500),
+                  opacity: _visible ? 1.0 : 0.0,
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(32.0, 0, 32.0, 0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Container(
+                              child: Text("Your Week", style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 35,
+                                  fontWeight: FontWeight.w600,
+                                  textBaseline: TextBaseline.alphabetic
+                                ),),
+                            ),
+                          ),
+                          SizedBox(height: 10,),
+                          Container(width: MediaQuery.of(context).size.width/1.2, height: 3,color: Colors.white,),
+                          SizedBox(height: 10,),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                WeatherReport(days[0], '${(forecast.days[0].main.tempMax).round()}º', '${(forecast.days[1].main.tempMin).round()-4}º'),
+                                WeatherReport(days[1], '${(forecast.days[8].main.tempMax).round()}º', '${(forecast.days[9].main.tempMin).round()-4}º'),
+                                WeatherReport(days[2], '${(forecast.days[16].main.tempMax).round()}º', '${(forecast.days[17].main.tempMin).round()-4}º'),
+                                WeatherReport(days[3], '${(forecast.days[24].main.tempMax).round()}º', '${(forecast.days[25].main.tempMin).round()-4}º'),
+                                WeatherReport(days[4], '${(forecast.days[32].main.tempMax).round()}º', '${(forecast.days[33].main.tempMin).round()-4}º'),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                ),
+              ),
+            ),
+            AnimatedContainer(
+              width: MediaQuery.of(context).size.width,
+              height: _height,
+              duration: Duration(milliseconds: 1000),
+              curve: Curves.linear,
+              decoration: BoxDecoration(
+                color: Colors.lightBlue,
+                borderRadius: new BorderRadius.only(
+                  bottomLeft:  const  Radius.circular(45.0),
+                  bottomRight: const  Radius.circular(45.0))
+              ),
+              child: Stack(
+                children: <Widget>[
+                  Align(
+                    alignment: Alignment(-0.8, -0.45),
+                    child: AnimatedOpacity(
+                      duration: Duration(milliseconds: 500),
+                      opacity: _visible ? 1.0 : 0.0,
+                      child: Text("Welcome", style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 45,
+                        fontWeight: FontWeight.w600,
+                      )),
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment(-0.8, -0.1),
+                    child: AnimatedOpacity(
+                      duration: Duration(milliseconds: 500),
+                      opacity: _visible ? 1.0 : 0.0,
+                      child: Text(formattedDate, style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w300
+                      )),
+                    ),
+                  ),
+                  AnimatedPositioned(
+                    right: 30,
+                    bottom: _visible ? 16 : 75,
+                    duration: Duration(milliseconds: 1000),
+                    child: Text('${(weatherModel.main.feelsLike).round()}º', style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 55,
+                      fontWeight: FontWeight.w600,
+                    ))
+                    ),
+                  Positioned(
+                    bottom: 28,
+                    right: 30,
+                    child: AnimatedOpacity(
+                      duration: Duration(milliseconds: 1000),
+                      opacity: _visible ? 0.0 : 0.5,
+                      child: Text("${(weatherModel.main.tempMin).round()}º", style: TextStyle(color: Colors.white, fontSize: 45)),
+                    ),
+                  )
+                ],
+              )
+            ),
+            AnimatedPositioned(
+              duration: Duration(milliseconds: 800),
+              top: _visible ? 150 : 75, 
+              left: 16,
+              child: AnimatedOpacity(
+                duration: Duration(milliseconds: 600),
+                opacity: _visible ? 0.0 : 1.0,
+                  child: Container(
+                    child: Text("${location.subAdminArea},\n${location.adminArea}", style: TextStyle(color: Colors.white, fontSize: 45, fontWeight: FontWeight.w600),)),
+                ),
+              ),
+            Positioned(
+              top: 230,
+              left: 25, 
+              right: 25,
+              child: AnimatedOpacity(
+                duration: Duration(milliseconds: 1200),
+                opacity: _visible ? 0.0 : 1.0,
+                child: Container(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Opacity(
+                            opacity: 0.5,
+                            child: Text("Sunrise", style: TextStyle(color: Colors.white, fontSize: 25))),
+                          Text("${(formatSunrise)}", style: TextStyle(fontSize: 35, color: Colors.white)),
+                          SizedBox(height: 55),
+                          Opacity(
+                            opacity: 0.5,
+                            child: Text("Humidity", style: TextStyle(color: Colors.white, fontSize: 25))),
+                          Text("${(weatherModel.main.humidity)}%", style: TextStyle(fontSize: 35, color: Colors.white)),
+                        ],
+                      ),
+                      // SizedBox(width: MediaQuery.of(context).size.width/5.5),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: <Widget>[
+                          Opacity(
+                            opacity: 0.5,
+                            child: Text("Sunset", style: TextStyle(color: Colors.white, fontSize: 25))),
+                          Text("${(formatSunset)}", style: TextStyle(fontSize: 35, color: Colors.white)),
+                          SizedBox(height: 55),
+                          Opacity(
+                            opacity: 0.5,
+                            child: Text("Wind Speed", style: TextStyle(color: Colors.white, fontSize: 25))),
+                          Text("${(weatherModel.wind.speed).round()} mph", style: TextStyle(fontSize: 35, color: Colors.white)),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            AnimatedPositioned(
+              duration: Duration(milliseconds: 1000),
+              top: _visible ? 290 : MediaQuery.of(context).size.height-210, 
+              right: MediaQuery.of(context).size.width/2-45,
+              child: RawMaterialButton(
+                onPressed: () {
+                  _updateState();
+                },
+                elevation: 5.0,
+                fillColor: Colors.white,
+                child: Icon(
+                  _icon,
+                  size: 35.0,
+                ),
+                padding: EdgeInsets.all(15.0),
+                shape: CircleBorder(),
+              ),
+            ),
+            Positioned(
+              bottom: 32,
+              left: MediaQuery.of(context).size.width/4,
+              child: Container(
+                margin: const EdgeInsets.all(0.0),
+                child: AnimatedOpacity(
+                  duration: Duration(milliseconds: 1000),
+                  opacity: _visible ? 0.0 : 1.0,
+                    child: Text('© Adam Anderson 2020', style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w300))),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
