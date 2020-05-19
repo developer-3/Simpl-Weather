@@ -11,4 +11,4 @@ A basic weather app for iOS and Android built in Flutter.  Weather data pulled f
 ## Screenshots
 
 <img src='/images/mainview.png' title='Main Screen' width='200' height='400' alt='Main Screen' />
-<img src='/images/detailsview.png' title='Details Screen' width='' alt='Details Screen' />
+<img src='/images/detailsview.png' title='Details Screen' width='200' height='400' alt='Details Screen' />
